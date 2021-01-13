@@ -105,6 +105,8 @@ TextButton(
 
 #### StreamedState
 
+![StreamedState Scheme](https://i.ibb.co/nwZWsP2/relation-streamed-state.png)
+
 With `StreamedState` you can notify consumers of data changes.
 
 Create a `StreamedState` class instance. `StreamedState` constructor allows you to set the initial value that the consumer will receive as soon as it subscribes to the `StreamedState`. You need to specify the specific data type that your `StreamedState` will handle.
