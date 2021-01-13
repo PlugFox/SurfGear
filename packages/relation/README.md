@@ -205,6 +205,58 @@ This means that you can work with the `ClipboardStatusNotifier`, `TextEditingCon
 
 #### EntityStreamedState + EntityStateBuilder
 
+`EntityStreamedState` is an extended version of `StreamedState` designed to make it easier to implement typical dynamic data screens.
+
+We have noticed that most screens in mobile applications are quite simple and have several typical states: data, loading, error. `EntityStreamedState` provides you a handy interface for the data stream to handle these states properly.
+
+Create a `EntityStreamedState` class instance. Actually, it has the same abilities as `StreamedState`: the initial value setup and the specific data type declaration. Notice that `EntityStreamedState` accepts not a raw piece of data but an `EntityState` wrapper around your data.
+
+```dart
+final userProfileState = EntityStreamedState<UserProfile>(EntityState(isLoading: true));
+```
+
+Now you can switch your `EntityStreamedState`'s state with just a simple function call. A typical workflow for a query providing some data would look like this:
+
+```dart
+userProfileState.loading();
+try {
+  final result = await _loadUserProfile();
+  userProfileState.content(result);
+} on Exception catch (error) {
+  userProfileState.error(error);
+}
+```
+
+But what all these functions actually do? The answer is on the other side. Using `EntityStateBuilder` instead of simple `StreamedStateBuilder` you can set widgets for all three states in a declarative way and switch between them easily.
+
+Pass `EntityStreamedState` instance to the `streamedState` argument first. Right after that you can specify a set of widgets for displaying data (`child`), load state ('loadingChild') and error state (`errorChild`).
+
+```dart
+EntityStateBuilder<UserProfile>(
+  streamedState: userProfileState,
+  child: (ctx, data) => UserProfileWidget(data),
+  loadingChild: CircularProgressIndicator(),
+  errorChild: ErrorWidget('Something went wrong. Please, try again'),
+),
+```
+
+Another way to deal with `EntityStateBuilder` is to use `loadingBuilder` and `errorBuilder`. This allows you to customize the error state widgets because you can account for the type of error and the last registered data value from the data stream received by the `errorBuilder`. The same with `loadingBuilder`.
+
+```dart
+EntityStateBuilder<UserProfile>(
+  streamedState: userProfileState,
+  child: (ctx, data) => UserProfileWidget(data),
+  loadingBuilder: (context, data) {
+    return LoadingWidget(data);
+  },
+  errorBuilder: (context, data, error) {
+    return ErrorWidget(error);
+  },
+),
+```
+
+To summarize, every time someone calls an `EntityStateBuilder`s functions (`loading()`, `content()` or `error()`), the builder redraws its widget subtree and displays the state that corresponds to the last call.
+
 #### TextFieldStreamedState + TextFieldStateBuilder
 
 Use TextFieldStateBuilder to update ui
@@ -217,17 +269,8 @@ TextFieldStateBuilder(
 ```
 
 
-
 During initialization, for StreamedState and EntityStreamedState, you can set initial values that will be displayed when the widget is initialized.
-```dart
-final incrementState = r.StreamedState<int>(0);
-final loadDataState = r.EntityStreamedState<int>(r.EntityState(isLoading: true));
-```
 
-final incrementState = StreamedState<int>();
-final reloadAction = Action();
- final loadDataState = EntityStreamedState<int>();
-### Action binding
 
 ### State management
 When a user performs an action, it entails a change in the state of the program.
@@ -249,20 +292,6 @@ await loadDataState.content(await result);
     - data - data load success
 
 These states can help you design your implementation of a responsive interface.
-
-### Update UI
-To listen for changes happening in StreamedState and EntityStreamedState use the EntityStateBuilder:
-
-
-StreamedStateBuilder also supports receiving states _loading_, _error_ and _data_
-```dart
-EntityStateBuilder<int>(
-streamedState: loadDataState,
-child: (ctx, data) => Text('success load: $data'),
-loadingChild: CircularProgressIndicator(),
-errorChild: Text('sorry - error, try again'),
-),
-```
 
 ## Installation
 
