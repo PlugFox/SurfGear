@@ -152,8 +152,8 @@ You can build state management solution for your Flutter app using all of the ab
 
 We recommend using **Relation** package in conjunction with [MWWM architecture](https://pub.dev/packages/mwwm).
 
-- Use `Action`s to notify the presentation layer about all the UI events (button taps, pull-to-refresh triggers, swipes, or other gestures detections);
-- Use `StreamedState`s to report any data changes to the UI layer;
+- Use `Action` to notify the presentation layer about all the UI events (button taps, pull-to-refresh triggers, swipes, or other gestures detections);
+- Use `StreamedState` to report any data changes to the UI layer;
 - Let `StreamedStateBuilder` manage the UI state for you. It will rebuild all its child widgets right after it detects any newly emitted data in the associated `StreamedState`.
 
 ## Extra units
@@ -164,9 +164,42 @@ The **Relation** package provides you not only some basic components for common 
 
 #### ScrollOffsetActon
 
+You can use special `ScrollOffsetAction` to track the scroll offset of a scrollable widget. This is possible thanks to the built-in `ScrollController`.
+
+```dart
+final scrollOffsetAction = ScrollOffsetAction();
+
+scrollOffsetAction.stream.listen((offset) {
+    print("Current scroll offset = $offset");
+});
+
+SingleChildScrollView(
+    controller: scrollOffsetAction.controller,
+)
+```
+
 #### TextEditingActon
 
+`TextEditingAction` is the special type of **Action** to track the text changes in the text field. The built-in `TextEditingController` makes it possible.
+
+```dart
+final textEditingAction = TextEditingAction();
+
+textEditingAction.stream.listen((text) {
+    print("Typed text = $text");
+});
+
+TextField(
+    controller: textEditingAction.controller,
+    onChanged: textEditingAction,
+),
+```
+
 #### ControllerActon
+
+`ControllerAction` is more common than two previous variations. During the `ControllerAction` instantiation you can pass a [`ValueNotifier`](https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html) inheritor into it.
+
+This means that you can work with the `ClipboardStatusNotifier`, `TextEditingController` or `TransformationController` through the `ControllerAction`.
 
 ### Extra StreamedStates
 
@@ -174,6 +207,14 @@ The **Relation** package provides you not only some basic components for common 
 
 #### TextFieldStreamedState + TextFieldStateBuilder
 
+Use TextFieldStateBuilder to update ui
+```dart
+TextFieldStateBuilder(
+        state: testData,
+        stateBuilder: (context, data) {
+        return Text('test');
+}),  
+```
 
 
 
@@ -221,45 +262,6 @@ child: (ctx, data) => Text('success load: $data'),
 loadingChild: CircularProgressIndicator(),
 errorChild: Text('sorry - error, try again'),
 ),
-```
-## Additional States
-To listen for text actions use TextEditingAction
-```dart
-final textAction = r.TextEditingAction();
-...
-textAction.stream.listen((event) {
-    print("typed $event");
-});
-...
-TextField(
-    controller: textAction.controller,
-    onChanged: textAction,
-),
-```
-Use TextFieldStateBuilder to update ui
-```dart
-TextFieldStateBuilder(
-        state: testData,
-        stateBuilder: (context, data) {
-        return Text('test');
-}),  
-```
-To track the scroll offset use ScrollOffsetAction
-```dart
-final scrollAction = r.ScrollOffsetAction();
-...
-scrollAction.stream.listen((event) {
-      print("scroll offset $event");
-});
-...
-TextField(
-    controller: textAction.controller,
-    onChanged: textAction,
-),
-...
-SingleChildScrollView(
-    controller: scrollAction.controller,
-)
 ```
 
 ## Installation
