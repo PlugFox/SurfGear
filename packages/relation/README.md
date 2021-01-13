@@ -170,11 +170,11 @@ You can use special `ScrollOffsetAction` to track the scroll offset of a scrolla
 final scrollOffsetAction = ScrollOffsetAction();
 
 scrollOffsetAction.stream.listen((offset) {
-    print("Current scroll offset = $offset");
+  print("Current scroll offset = $offset");
 });
 
 SingleChildScrollView(
-    controller: scrollOffsetAction.controller,
+  controller: scrollOffsetAction.controller,
 )
 ```
 
@@ -207,7 +207,13 @@ This means that you can work with the `ClipboardStatusNotifier`, `TextEditingCon
 
 `EntityStreamedState` is an extended version of `StreamedState` designed to make it easier to implement typical dynamic data screens.
 
-We have noticed that most screens in mobile applications are quite simple and have several typical states: data, loading, error. `EntityStreamedState` provides you a handy interface for the data stream to handle these states properly.
+We have noticed that most screens in mobile applications are quite simple and have several typical states:
+
+- data;
+- loading;
+- error.
+
+`EntityStreamedState` provides you a handy interface for the data stream to handle these states properly.
 
 Create a `EntityStreamedState` class instance. Actually, it has the same abilities as `StreamedState`: the initial value setup and the specific data type declaration. Notice that `EntityStreamedState` accepts not a raw piece of data but an `EntityState` wrapper around your data.
 
@@ -229,7 +235,7 @@ try {
 
 But what all these functions actually do? The answer is on the other side. Using `EntityStateBuilder` instead of simple `StreamedStateBuilder` you can set widgets for all three states in a declarative way and switch between them easily.
 
-Pass `EntityStreamedState` instance to the `streamedState` argument first. Right after that you can specify a set of widgets for displaying data (`child`), load state ('loadingChild') and error state (`errorChild`).
+Pass `EntityStreamedState` instance to the `streamedState` argument first. Right after that you can specify a set of widgets for displaying data (`child`), load state (`loadingChild`) and error state (`errorChild`).
 
 ```dart
 EntityStateBuilder<UserProfile>(
@@ -255,43 +261,34 @@ EntityStateBuilder<UserProfile>(
 ),
 ```
 
-To summarize, every time someone calls an `EntityStateBuilder`s functions (`loading()`, `content()` or `error()`), the builder redraws its widget subtree and displays the state that corresponds to the last call.
+To summarize, every time someone calls an `EntityStateBuilder`'s functions (`loading()`, `content()` or `error()`), the builder redraws its widget subtree and displays the state that corresponds to the last call.
 
 #### TextFieldStreamedState + TextFieldStateBuilder
 
-Use TextFieldStateBuilder to update ui
+The idea of `TextFieldStreamedState` and `TextFieldStateBuilder` technically the same with the difference that `TextFieldStreamedState` is designed to work with text widgets (`Text`, `TextField`, etc.).
+
+`TextFieldStreamedState` allows you to setup your text field validation rules and some other settings like is the text field enabled or mandatory to be filled.
+
+```dart
+final textState = TextFieldStreamedState(
+  'initialString',
+  validator: '[a-zA-Z]{3,30}',
+  canEdit: true,
+  incorrectTextMsg: 'Text is invalid',
+  mandatory: true,
+);
+```
+
+`TextFieldStateBuilder` accepts the `TextFieldStreamedState` instance and allows to create text widgets according to all state properties.
+
 ```dart
 TextFieldStateBuilder(
-        state: testData,
-        stateBuilder: (context, data) {
-        return Text('test');
-}),  
+  state: textState,
+  stateBuilder: (context, textStateValue) {
+    return Text(textStateValue.data);
+  },
+),
 ```
-
-
-During initialization, for StreamedState and EntityStreamedState, you can set initial values that will be displayed when the widget is initialized.
-
-
-### State management
-When a user performs an action, it entails a change in the state of the program.
-```dart
-Future increment() async {
-    return incrementState.accept(incrementState.value + 1);
-}
-
-Future _load() async {
-    await loadDataState.loading();
-    var result = Future.delayed(Duration(seconds: 2),() =>DateTime.now().second,);
-await loadDataState.content(await result);
-}
-```
-- StreamedState contain any data type.
-- EntityStreamedState, in addition to storing data, also contains 3 standard states
-    - loading - load data 
-    - error - error of load
-    - data - data load success
-
-These states can help you design your implementation of a responsive interface.
 
 ## Installation
 
