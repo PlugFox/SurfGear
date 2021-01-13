@@ -62,6 +62,8 @@ We will resolve this collision in one of the upcoming releases.
 
 #### Action
 
+![Action Scheme](https://i.ibb.co/6wVgh84/relation-action.png)
+
 `Action` is a good way to notify consumers about every event coming from the UI.
 
 Create an `Action` class instance. You can pass data with `Action`'s events, so you need to specify the concrete type of `Action` while declaring it.
