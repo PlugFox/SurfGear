@@ -137,6 +137,8 @@ In fact, you can use `Action`s and `StreamedState`s to communicate between any o
 
 #### StreamStateBuilder
 
+![StreamedStateBuilder Scheme](https://i.ibb.co/xhVBkt8/relation-streamed-state-builder.png)
+
 `StreamStateBuilder` is a widget that builds itself based on the latest snapshot of interaction with a `StreamedState`. The `StreamStateBuilder`'s behavior is almost the same as the standard `StreamBuilder` with the difference that it accepts `StreamedState` instead of the usual `Stream`, thus simplifying the initial data setup.
 
 `StreamStateBuilder` rebuilds its widget subtree each time as its associated `StreamedState` emits a new value. This is the recommended way to organize your UI layer. It can save you from multiple `setState()` function calls.
