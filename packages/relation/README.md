@@ -154,6 +154,8 @@ Container(
 
 ### State Management
 
+![State Management Scheme](https://i.ibb.co/YcnGww0/relation-state-management.png)
+
 You can build state management solution for your Flutter app using all of the above components.
 
 We recommend using **Relation** package in conjunction with [MWWM architecture](https://pub.dev/packages/mwwm).
