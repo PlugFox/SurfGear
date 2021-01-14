@@ -2,6 +2,7 @@
 
 [![Pub Version](https://img.shields.io/pub/v/mwwm)](https://pub.dev/packages/mwwm)
 [![Pub Version (including pre-releases)](https://img.shields.io/pub/v/mwwm?include_prereleases)](https://pub.dev/packages/mwwm)
+[![Supported Platforms](https://badgen.net/pub/flutter-platform/mwwm)](https://pub.dev/packages/mwwm)
 [![Pub Likes](https://badgen.net/pub/likes/mwwm)](https://pub.dev/packages/mwwm)
 
 This package is part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolset made by [Surf](https://surf.ru/).

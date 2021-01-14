@@ -2,6 +2,7 @@
 
 [![Pub Version](https://img.shields.io/pub/v/relation)](https://pub.dev/packages/relation)
 [![Pub Version (including pre-releases)](https://img.shields.io/pub/v/relation?include_prereleases)](https://pub.dev/packages/relation)
+[![Supported Platforms](https://badgen.net/pub/flutter-platform/relation)](https://pub.dev/packages/relation)
 [![Pub Likes](https://badgen.net/pub/likes/relation)](https://pub.dev/packages/relation)
 
 This package is part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolset made by [Surf](https://surf.ru/).

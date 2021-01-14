@@ -2,6 +2,7 @@
 
 [![Pub Version](https://img.shields.io/pub/v/render_metrics)](https://pub.dev/packages/render_metrics)
 [![Pub Version (including pre-releases)](https://img.shields.io/pub/v/render_metrics?include_prereleases)](https://pub.dev/packages/render_metrics)
+[![Supported Platforms](https://badgen.net/pub/flutter-platform/render_metrics)](https://pub.dev/packages/render_metrics)
 [![Pub Likes](https://badgen.net/pub/likes/render_metrics)](https://pub.dev/packages/render_metrics)
 
 This package is part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolset made by [Surf](https://surf.ru/).
