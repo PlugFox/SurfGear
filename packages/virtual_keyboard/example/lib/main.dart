@@ -20,7 +20,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +36,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
 
   final String title;
 
@@ -83,8 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         splashColor: Colors.green,
         onTap: () {
           _symbols = '';
-          _KeyboardUtils.numericKeyboardKeys[3][2] =
-              _KeyboardUtils.buildDelete();
+          _KeyboardUtils.numericKeyboardKeys[3][2] = _KeyboardUtils.buildDelete();
           setState(() {});
         },
         child: const SizedBox(
@@ -118,8 +121,7 @@ abstract class _KeyboardUtils {
   static List<List<VirtualKeyboardKey>> numericKeyboardKeys = [
     for (int i = 1; i < 4; i++)
       [
-        for (int j = 1; j < 4; j++)
-          VirtualKeyboardNumberKey((i * j).toString()),
+        for (int j = 1; j < 4; j++) VirtualKeyboardNumberKey((i * j).toString()),
       ],
     [
       VirtualKeyboardEmptyStubKey(),

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-int parseInt(Object from) {
+int? parseInt(Object? from) {
   // ignore: avoid_returning_null
   if (from == null) return null;
   if (from is int) return from;

@@ -24,8 +24,8 @@ typedef KeyboardPressCallback = void Function(VirtualKeyboardKey keyboardKey);
 
 class VirtualKeyboardWidget extends StatefulWidget {
   const VirtualKeyboardWidget({
-    @required this.keyboardKeys,
-    Key key,
+    required this.keyboardKeys,
+    Key? key,
     this.buttonWidth,
     this.buttonHeight,
     this.onPressKey,
@@ -37,19 +37,19 @@ class VirtualKeyboardWidget extends StatefulWidget {
   final List<List<VirtualKeyboardKey>> keyboardKeys;
 
   /// Button Width
-  final double buttonWidth;
+  final double? buttonWidth;
 
   /// Button height
-  final double buttonHeight;
+  final double? buttonHeight;
 
   /// Callback button click
-  final KeyboardPressCallback onPressKey;
+  final KeyboardPressCallback? onPressKey;
 
   /// Button text textStyle
-  final TextStyle keyTextStyle;
+  final TextStyle? keyTextStyle;
 
   /// Effect of pressing a button
-  final VirtualKeyboardEffect virtualKeyboardEffect;
+  final VirtualKeyboardEffect? virtualKeyboardEffect;
 
   @override
   State<StatefulWidget> createState() {
@@ -71,18 +71,14 @@ class _VirtualKeyboardWidgetState extends State<VirtualKeyboardWidget> {
     return Material(
       type: MaterialType.transparency,
       child: Table(
-        children: [
-          for (List<VirtualKeyboardKey> line in _keyboardKeys) _buildLine(line)
-        ],
+        children: [for (List<VirtualKeyboardKey> line in _keyboardKeys) _buildLine(line)],
       ),
     );
   }
 
   TableRow _buildLine(List<VirtualKeyboardKey> line) {
     return TableRow(
-      children: [
-        for (VirtualKeyboardKey keyboardKey in line) _buildKey(keyboardKey)
-      ],
+      children: [for (VirtualKeyboardKey keyboardKey in line) _buildKey(keyboardKey)],
     );
   }
 
@@ -106,7 +102,7 @@ class _VirtualKeyboardWidgetState extends State<VirtualKeyboardWidget> {
   }
 
   Widget _buildValueKey(VirtualKeyboardKey keyboardKey) {
-    if (keyboardKey.widget != null) return keyboardKey.widget;
+    if (keyboardKey.widget != null) return keyboardKey.widget!;
 
     if (keyboardKey.isInstance<VirtualKeyboardValueKey>()) {
       return Text(
