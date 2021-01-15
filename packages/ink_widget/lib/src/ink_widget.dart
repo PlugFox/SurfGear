@@ -18,11 +18,11 @@ import 'package:flutter/material.dart';
 /// Solves the problem when Material effects overlap with a child’s decoration
 class InkWidget extends StatelessWidget {
   InkWidget({
-    Key key,
-    this.child,
-    bool disable,
-    double disableOpacity,
-    Color disableColor,
+    required this.child,
+    Key? key,
+    bool? disable,
+    double? disableOpacity,
+    Color? disableColor,
     this.disableWidget,
     this.shape,
     this.shapeBorder,
@@ -42,12 +42,12 @@ class InkWidget extends StatelessWidget {
     this.radius,
     this.borderRadius,
     this.customBorder,
-    bool enableFeedback,
-    bool excludeFromSemantics,
+    bool? enableFeedback,
+    bool? excludeFromSemantics,
     this.focusNode,
-    bool canRequestFocus,
+    bool? canRequestFocus,
     this.onFocusChange,
-    bool autofocus,
+    bool? autofocus,
   })  : disable = disable ?? false,
         disableOpacity = disableOpacity ?? .5,
         disableColor = disableColor ?? Colors.black.withOpacity(.5),
@@ -70,38 +70,38 @@ class InkWidget extends StatelessWidget {
   final Color disableColor;
 
   /// shape for InkWell and disable widget
-  final ShapeDecoration shape;
+  final ShapeDecoration? shape;
 
   /// shape border for InkWell and disable widget
-  final ShapeBorder shapeBorder;
+  final ShapeBorder? shapeBorder;
 
   /// custom disable widget
-  final Widget disableWidget;
+  final Widget? disableWidget;
 
   /// custom InlWell Widget
-  final InkWell inkWellWidget;
+  final InkWell? inkWellWidget;
 
   /// Parameters from InkWell
-  final GestureTapCallback onTap;
-  final GestureTapCallback onDoubleTap;
-  final GestureLongPressCallback onLongPress;
-  final GestureTapDownCallback onTapDown;
-  final GestureTapCancelCallback onTapCancel;
-  final ValueChanged<bool> onHighlightChanged;
-  final ValueChanged<bool> onHover;
-  final Color focusColor;
-  final Color hoverColor;
-  final Color highlightColor;
-  final Color splashColor;
-  final InteractiveInkFeatureFactory splashFactory;
-  final double radius;
-  final BorderRadius borderRadius;
-  final ShapeBorder customBorder;
+  final GestureTapCallback? onTap;
+  final GestureTapCallback? onDoubleTap;
+  final GestureLongPressCallback? onLongPress;
+  final GestureTapDownCallback? onTapDown;
+  final GestureTapCancelCallback? onTapCancel;
+  final ValueChanged<bool>? onHighlightChanged;
+  final ValueChanged<bool>? onHover;
+  final Color? focusColor;
+  final Color? hoverColor;
+  final Color? highlightColor;
+  final Color? splashColor;
+  final InteractiveInkFeatureFactory? splashFactory;
+  final double? radius;
+  final BorderRadius? borderRadius;
+  final ShapeBorder? customBorder;
   final bool enableFeedback;
   final bool excludeFromSemantics;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final bool canRequestFocus;
-  final ValueChanged<bool> onFocusChange;
+  final ValueChanged<bool>? onFocusChange;
   final bool autofocus;
 
   @override
@@ -147,16 +147,16 @@ class InkWidget extends StatelessWidget {
         );
   }
 
-  ShapeDecoration get _shapeDisable {
+  ShapeDecoration? get _shapeDisable {
     if (shape == null && shapeBorder == null) return null;
     return shape ??
         ShapeDecoration(
           color: disableColor,
-          shape: shapeBorder,
+          shape: shapeBorder!,
         );
   }
 
-  Color get _disableColor => shape == null ? disableColor : null;
+  Color? get _disableColor => shape == null ? disableColor : null;
 
   Widget _buildDisableWidget() {
     return disableWidget ??
