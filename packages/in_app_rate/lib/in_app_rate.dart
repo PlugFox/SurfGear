@@ -38,9 +38,9 @@ class InAppRate {
   /// you could open link to application store
   ///
   /// @return true if can open dialog
-  static Future<bool> openRatingDialog({
-    bool isTest,
-    VoidCallback onError,
+  static Future<bool?> openRatingDialog({
+    bool isTest = false,
+    VoidCallback? onError,
   }) {
     return _channel.invokeMethod<bool>(
       openRatingDialogMethod,
@@ -48,14 +48,13 @@ class InAppRate {
         isTestEnvironment: isTest,
       },
     ).catchError(
-      (dynamic error) {
+      // ignore: avoid_types_on_closure_parameters
+      (Object error) {
         if (onError != null) {
           onError();
           return false;
         } else {
-          Platform.isAndroid
-              ? throw PlayServiceNotEnabled()
-              : throw IOVersionIsLow();
+          Platform.isAndroid ? throw PlayServiceNotEnabled() : throw IOVersionIsLow();
         }
       },
     );

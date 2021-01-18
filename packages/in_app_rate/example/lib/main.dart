@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:in_app_rate/in_app_rate.dart';
 
 void main() {
@@ -31,8 +28,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: () async {
               final isSuccess = await InAppRate.openRatingDialog(
                 isTest: false,
-                onError: () =>
-                    print("Error: try open url to application store"),
+                onError: () => print("Error: try open url to application store"),
               );
 //              final isSuccess = await InAppRate.openRatingDialog(isTest: false)
 //                  .catchError((error) {
