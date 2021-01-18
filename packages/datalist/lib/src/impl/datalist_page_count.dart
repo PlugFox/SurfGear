@@ -25,9 +25,9 @@ import 'package:datalist/src/exceptions.dart';
 /// @param <T> Item
 class PageCountDataList<T> extends DataList<T> {
   PageCountDataList({
-    this.data,
-    this.pageSize,
-    this.startPage,
+    required this.data,
+    required this.pageSize,
+    required this.startPage,
     this.numPages = 1,
     this.totalItemsCount = unspecifiedTotalItemsCount,
     this.totalPagesCount = unspecifiedTotalPagesCount,
@@ -39,8 +39,7 @@ class PageCountDataList<T> extends DataList<T> {
   /// @param totalItemsCount max count of items
   /// @param totalPagesCount max count of pages
   /// @return empty DataList
-  factory PageCountDataList.emptyWithTotalCount(
-          int totalItemsCount, int totalPagesCount) =>
+  factory PageCountDataList.emptyWithTotalCount(int totalItemsCount, int totalPagesCount) =>
       PageCountDataList(
         data: [],
         startPage: unspecifiedPage,
@@ -54,15 +53,13 @@ class PageCountDataList<T> extends DataList<T> {
   ///
   /// @param <T> тип данных в листе
   /// @return пустой дата-лист
-  factory PageCountDataList.empty() =>
-      PageCountDataList.emptyWithTotalCount(0, 0);
+  factory PageCountDataList.empty() => PageCountDataList.emptyWithTotalCount(0, 0);
 
   /// Create empty DataList
   ///
   /// @param <T> data type in list
   /// @return empty data list
-  factory PageCountDataList.emptyUnspecifiedTotal() =>
-      PageCountDataList.emptyWithTotalCount(
+  factory PageCountDataList.emptyUnspecifiedTotal() => PageCountDataList.emptyWithTotalCount(
         unspecifiedTotalItemsCount,
         unspecifiedTotalPagesCount,
       );
@@ -107,8 +104,7 @@ class PageCountDataList<T> extends DataList<T> {
     }
 
     final Map<int, List<T>> originalPagesData = _split();
-    final Map<int, List<T>> inputPagesData =
-        inputDataList._split().cast<int, List<T>>();
+    final Map<int, List<T>> inputPagesData = inputDataList._split().cast<int, List<T>>();
     final SplayTreeMap<int, List<T>> resultPagesData = SplayTreeMap()
       ..addAll(originalPagesData)
       ..addAll(inputPagesData);
@@ -134,14 +130,12 @@ class PageCountDataList<T> extends DataList<T> {
     data.addAll(newData);
     startPage = resultPagesData.entries.first.key;
     numPages = lastPage - startPage + 1;
-    totalItemsCount =
-        inputDataList.totalItemsCount == unspecifiedTotalItemsCount
-            ? totalItemsCount
-            : inputDataList.totalItemsCount;
-    totalPagesCount =
-        inputDataList.totalPagesCount == unspecifiedTotalPagesCount
-            ? totalPagesCount
-            : inputDataList.totalPagesCount;
+    totalItemsCount = inputDataList.totalItemsCount == unspecifiedTotalItemsCount
+        ? totalItemsCount
+        : inputDataList.totalItemsCount;
+    totalPagesCount = inputDataList.totalPagesCount == unspecifiedTotalPagesCount
+        ? totalPagesCount
+        : inputDataList.totalPagesCount;
     if (inputDataList.pageSize != unspecifiedPageSize) {
       pageSize = inputDataList.pageSize;
     }
@@ -156,8 +150,8 @@ class PageCountDataList<T> extends DataList<T> {
     for (int i = startPage; i < startPage + numPages; i++) {
       final int startItemIndex = (i - startPage) * pageSize;
       final int itemsRemained = data.length - startItemIndex;
-      final int endItemIndex = startItemIndex +
-          (itemsRemained < pageSize ? itemsRemained : pageSize);
+      final int endItemIndex =
+          startItemIndex + (itemsRemained < pageSize ? itemsRemained : pageSize);
       if (itemsRemained <= 0) break;
 
       result.putIfAbsent(i, () => data.sublist(startItemIndex, endItemIndex));
@@ -192,8 +186,7 @@ class PageCountDataList<T> extends DataList<T> {
   @override
   bool get canGetMore =>
       startPage == unspecifiedPage ||
-      (data.length == (numPages - startPage + 1) * pageSize &&
-          totalPagesCount != numPages);
+      (data.length == (numPages - startPage + 1) * pageSize && totalPagesCount != numPages);
 
   /// Returns the page value from which to start to load the next data block
   int get nextPage => startPage == unspecifiedPage ? 1 : startPage + numPages;
@@ -215,7 +208,7 @@ class PageCountDataList<T> extends DataList<T> {
   }
 
   @override
-  bool remove(Object value) {
+  bool remove(Object? value) {
     throw Exception("Unsupported operation 'remove'");
   }
 

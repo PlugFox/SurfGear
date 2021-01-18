@@ -26,7 +26,7 @@ import 'package:datalist/src/exceptions.dart';
 /// @param <T> Item
 class OffsetDataList<T> extends DataList<T> {
   OffsetDataList({
-    this.data,
+    required this.data,
     this.limit = 0,
     this.offset = 0,
     this.totalCount = 0,
@@ -65,7 +65,7 @@ class OffsetDataList<T> extends DataList<T> {
     final OffsetDataList data = _data as OffsetDataList;
 
     final bool reverse = data.offset < offset;
-    final List<T> merged = _tryMerge(
+    final List<T>? merged = _tryMerge(
       (reverse ? data : this) as OffsetDataList<T>,
       (reverse ? this : data) as OffsetDataList<T>,
     );
@@ -100,8 +100,7 @@ class OffsetDataList<T> extends DataList<T> {
     R Function(T item) distinctPredicate,
   ) {
     final bool reverse = data.offset < offset;
-    final List<T> merged =
-        _tryMerge(reverse ? data : this, reverse ? this : data);
+    final List<T>? merged = _tryMerge(reverse ? data : this, reverse ? this : data);
     if (merged == null) {
       throw IncompatibleRangesException('incorrect data range');
     }
@@ -167,7 +166,7 @@ class OffsetDataList<T> extends DataList<T> {
   @override
   bool get canGetMore => totalCount > limit + offset;
 
-  List<T> _tryMerge(OffsetDataList<T> to, OffsetDataList<T> from) {
+  List<T>? _tryMerge(OffsetDataList<T> to, OffsetDataList<T> from) {
     if ((to.offset + to.limit) >= from.offset) {
       return _mergeLists(to.data, from.data, from.offset - to.offset);
     }
@@ -176,10 +175,7 @@ class OffsetDataList<T> extends DataList<T> {
   }
 
   List<T> _mergeLists(List<T> to, List<T> from, int start) {
-    final List<T> result = [
-      ...start < to.length ? to.sublist(0, start) : to,
-      ...from
-    ];
+    final List<T> result = [...start < to.length ? to.sublist(0, start) : to, ...from];
     return result;
   }
 
@@ -189,7 +185,7 @@ class OffsetDataList<T> extends DataList<T> {
   }
 
   @override
-  bool remove(Object value) {
+  bool remove(Object? value) {
     throw Exception("Unsupported operation 'remove'");
   }
 
@@ -215,7 +211,7 @@ class OffsetDataList<T> extends DataList<T> {
   }
 
   @override
-  List<T> sublist(int start, [int end]) {
+  List<T> sublist(int start, [int? end]) {
     throw Exception("Unsupported operation 'sublist'");
   }
 
