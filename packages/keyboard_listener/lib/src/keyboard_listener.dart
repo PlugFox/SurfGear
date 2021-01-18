@@ -43,11 +43,15 @@ class KeyboardListener with WidgetsBindingObserver {
   Map<String, VoidCallback> get hideListeners => _hideListeners;
 
   /// Getter values whether the keyboard is visible
-  bool get isVisibleKeyboard =>
-      WidgetsBinding.instance.window.viewInsets.bottom > 0;
+  bool get isVisibleKeyboard {
+    if (WidgetsBinding.instance == null) {
+      return false;
+    }
+    return WidgetsBinding.instance!.window.viewInsets.bottom > 0;
+  }
 
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     _changeListeners.clear();
     _showListeners.clear();
     _hideListeners.clear();
@@ -72,10 +76,10 @@ class KeyboardListener with WidgetsBindingObserver {
   /// [onHide] - callback to hide the keyboard
   ///
   String addListener({
-    String id,
-    KeyboardChangeListener onChange,
-    VoidCallback onShow,
-    VoidCallback onHide,
+    String? id,
+    KeyboardChangeListener? onChange,
+    VoidCallback? onShow,
+    VoidCallback? onHide,
   }) {
     assert(onChange != null || onShow != null || onHide != null);
     id ??= _generateId();
@@ -130,7 +134,7 @@ class KeyboardListener with WidgetsBindingObserver {
   }
 
   void _init() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   void _listener() {

@@ -20,22 +20,26 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'InkWidget example',
+      title: 'Keyboard listener example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(title: 'InkWidget example'),
+      home: const MyHomePage(title: 'Keyboard listener example'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
 
   final String title;
 
@@ -46,13 +50,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _isVisible = false;
 
-  KeyboardListener _keyboardListener;
+  late KeyboardListener _keyboardListener;
 
   @override
   void initState() {
     super.initState();
-    _keyboardListener = KeyboardListener()
-      ..addListener(onChange: _keyboardHandle);
+    _keyboardListener = KeyboardListener()..addListener(onChange: _keyboardHandle);
   }
 
   @override
@@ -77,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           RaisedButton(
             onPressed: () {
               if (FocusManager.instance.primaryFocus != null) {
-                FocusManager.instance.primaryFocus.unfocus();
+                FocusManager.instance.primaryFocus!.unfocus();
               } else {
                 FocusScope.of(context).requestFocus(FocusNode());
               }
