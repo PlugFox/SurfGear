@@ -16,25 +16,25 @@ Two-way communication channels for transferring data between different architect
 ## Currently supported features
 
 - Notify your app's presentation layer about every user input or UI event (button tap, focus change, gesture detection, etc.) using `Action` and implement a reaction to them;
-- Write less code with *Actions* that are customized for specific use cases (scrolling, text changing, `ValueNotifier` value changing).
+- Write less code with *Actions* that are customized for specific user cases (scrolling, editing text, `ValueNotifier` value changing).
 - React to the data state changes and redraw UI using `StreamedState` together with `StreamedStateBuilder` and its variations;
-- Manage the screen state in an easy way with a special stream that handles three predefined states: data, loading, error.
+- Manage the screen state easily with a special stream that handles three predefined states: data, loading, error.
 
 ## Warning
 
 > :warning: You may run into naming collisions when using this package.
 
-We are using `Action` class, but there is already a class with the exact same name in the Flutter SDK, which leads to naming collisions. We recommend you to use one of 2 workarounds to avoid this issue. In the near future this class will be renamed.
+We use the `Action` class, but there is already a class with the exact same name in the Flutter SDK. This can lead to collisions with naming. We recommend you use one of the following workarounds to avoid this issue. This class will be renamed shortly.
 
 ### Preferred solution
 
-The preferable solution is specifying a prefix for relation library and use it for accessing Action class.
+The preferable solution is to specify a prefix for the **Relation** library and use it to access the `Action` class.
 
 ```dart
 import 'package:relation/relation.dart' as r;
 ```
 
-In that case it would be necessary to use your prefix to specify the right class while reffering to it.
+In this case you will need to use your prefix to specify the right class while reffering to it.
 
 ```dart
 final action = r.Action();
@@ -42,20 +42,20 @@ final action = r.Action();
 
 ### Optional solution
 
-Another option is hiding Action class from Flutter SDK.
+Another option is to hide the `Action` class from Flutter SDK.
 
 ```dart
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter/widgets.dart' hide Action;
 ```
 
-This solution provides you an ability to call `Action` class from `relation` library without any additional preffixes, but deprives you of the opportunity to reffer *Action* class from the SDK.
+This solution enables you to call `Action` class from **Relation** library without any additional preffixes but doesn't let you reffer `Action` class from the SDK.
 
 ```dart
 final action = Action();
 ```
 
-We will resolve this collision in one of the upcoming releases.
+This collision will disappear shortly with one of our upcoming releases.
 
 ## Usage
 
@@ -75,7 +75,7 @@ final logoutAction = Action<void>();
 final addItemToCartAction = Action<Item>();
 ```
 
-Find the place where you're going to handle events triggered by your `Action`. Subscribe to the event stream, which you can access through the `stream` property.
+Find the place where you're going to handle events triggered by your `Action`. Subscribe to the event stream. You can access it through the `stream` property.
 
 ```dart
 logoutAction.stream.listen(
@@ -87,7 +87,7 @@ addItemToCartAction.stream.listen(
 );
 ```
 
-Now you can trigger an event through an `Action` instance from anywhere this way:
+Now you can trigger an event through an `Action` instance from anywhere just like that:
 
 ```dart
 logoutAction.accept();
@@ -110,7 +110,7 @@ TextButton(
 
 With `StreamedState` you can notify consumers of data changes.
 
-Create a `StreamedState` class instance. `StreamedState` constructor allows you to set the initial value that the consumer will receive as soon as it subscribes to the `StreamedState`. You need to specify the specific data type that your `StreamedState` will handle.
+Create a `StreamedState` class instance. `StreamedState` constructor allows you to set the initial value that the consumers will receive as soon as they subscribe to the `StreamedState`. You need to specify the data type that your `StreamedState` will handle.
 
 ```dart
 final userBalanceState = StreamedState<int>(0);
@@ -118,7 +118,7 @@ final userBalanceState = StreamedState<int>(0);
 final itemsInCartState = StreamedState<List<Item>>();
 ```
 
-You can subscribe to `StreamedState` changes in the same way as with `Action`.
+You can subscribe to `StreamedState` changes the same way as with `Action`.
 
 ```dart
 userBalanceState.stream.listen(
@@ -126,7 +126,7 @@ userBalanceState.stream.listen(
 );
 ```
 
-To notify all consumers of data changes, you can emit the actual data to the `StreamedState` via the `accept()` function.
+To notify consumers of any data changes, you can release the relevant data to the `StreamedState` via the `accept()` function.
 
 ```dart
 userBalanceState.accept(100);
@@ -140,9 +140,9 @@ In fact, you can use `Action`s and `StreamedState`s to communicate between any o
 
 ![StreamedStateBuilder Scheme](https://i.ibb.co/xhVBkt8/relation-streamed-state-builder.png)
 
-`StreamStateBuilder` is a widget that builds itself based on the latest snapshot of interaction with a `StreamedState`. The `StreamStateBuilder`'s behavior is almost the same as the standard `StreamBuilder` with the difference that it accepts `StreamedState` instead of the usual `Stream`, thus simplifying the initial data setup.
+`StreamStateBuilder` is a widget built on the latest snapshot of interaction with a `StreamedState`. The `StreamStateBuilder`'s behavior is almost the same as the standard `StreamBuilder`. The only difference is that it accepts `StreamedState` instead of the usual `Stream`, thus simplifying the initial data setup.
 
-`StreamStateBuilder` rebuilds its widget subtree each time as its associated `StreamedState` emits a new value. This is the recommended way to organize your UI layer. It can save you from multiple `setState()` function calls.
+`StreamStateBuilder` rebuilds its widget subtree each time as its corresponding `StreamedState` emits a new value. This is the recommended way to organize your UI layer. It can save you from multiple `setState()` function calls.
 
 ```dart
 Container(
@@ -157,17 +157,17 @@ Container(
 
 ![State Management Scheme](https://i.ibb.co/YcnGww0/relation-state-management.png)
 
-You can build state management solution for your Flutter app using all of the above components.
+You can build a state management solution for your Flutter app using all of the components above.
 
 We recommend using **Relation** package in conjunction with [MWWM architecture](https://pub.dev/packages/mwwm).
 
-- Use `Action` to notify the presentation layer about all the UI events (button taps, pull-to-refresh triggers, swipes, or other gestures detections);
+- Use `Action` to notify the presentation layer of all UI events (button taps, pull-to-refresh triggers, swipes, or other gestures detections);
 - Use `StreamedState` to report any data changes to the UI layer;
-- Let `StreamedStateBuilder` manage the UI state for you. It will rebuild all its child widgets right after it detects any newly emitted data in the associated `StreamedState`.
+- Let `StreamedStateBuilder` manage the UI state for you. It will rebuild all its child widgets right after it detects any newly released data in the associated `StreamedState`.
 
 ## Extra units
 
-The **Relation** package provides you not only some basic components for common use-cases, but even more highly specialized classes for solving specific problems.
+The **Relation** package provides you not only with some basic components for common use cases, but with even more highly specialized classes for solving specific issues.
 
 ### Extra Actions
 
@@ -189,7 +189,7 @@ SingleChildScrollView(
 
 #### TextEditingActon
 
-`TextEditingAction` is the special type of **Action** to track the text changes in the text field. The built-in `TextEditingController` makes it possible.
+`TextEditingAction` is a special type of **Action** that tracks text changes in the text field. The built-in `TextEditingController` makes it possible.
 
 ```dart
 final textEditingAction = TextEditingAction();
@@ -206,25 +206,25 @@ TextField(
 
 #### ControllerActon
 
-`ControllerAction` is more common than two previous variations. During the `ControllerAction` instantiation you can pass a [`ValueNotifier`](https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html) inheritor into it.
+`ControllerAction` is more common than the two previous variations. You can pass a [`ValueNotifier`](https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html) inheritor during the `ControllerAction` instantiation.
 
-This means that you can work with the `ClipboardStatusNotifier`, `TextEditingController` or `TransformationController` through the `ControllerAction`.
+This means you can work with the `ClipboardStatusNotifier`, `TextEditingController` or `TransformationController` through the `ControllerAction`.
 
 ### Extra StreamedStates
 
 #### EntityStreamedState + EntityStateBuilder
 
-`EntityStreamedState` is an extended version of `StreamedState` designed to make it easier to implement typical dynamic data screens.
+`EntityStreamedState` is an extended version of `StreamedState` designed to make implementing typical dynamic data screens easier.
 
-We have noticed that most screens in mobile applications are quite simple and have several typical states:
+Most screens in mobile applications are quite simple and usually have several typical states:
 
 - data;
 - loading;
 - error.
 
-`EntityStreamedState` provides you a handy interface for the data stream to handle these states properly.
+`EntityStreamedState` provides you with a convenient interface for the data stream to handle these states properly.
 
-Create a `EntityStreamedState` class instance. Actually, it has the same abilities as `StreamedState`: the initial value setup and the specific data type declaration. Notice that `EntityStreamedState` accepts not a raw piece of data but an `EntityState` wrapper around your data.
+Create a `EntityStreamedState` class instance. It has the same abilities as `StreamedState`: the initial value setup and the specific data type declaration. Keep in mind that `EntityStreamedState` accepts an `EntityState` wrapper around your data rather than a raw part of your data.
 
 ```dart
 final userProfileState = EntityStreamedState<UserProfile>(EntityState(isLoading: true));
@@ -242,9 +242,9 @@ try {
 }
 ```
 
-But what all these functions actually do? The answer is on the other side. Using `EntityStateBuilder` instead of simple `StreamedStateBuilder` you can set widgets for all three states in a declarative way and switch between them easily.
+But what do all these functions actually do? The answer is on the other side. By using `EntityStateBuilder` instead of just `StreamedStateBuilder` you can set widgets for all three states and switch between them easily.
 
-Pass `EntityStreamedState` instance to the `streamedState` argument first. Right after that you can specify a set of widgets for displaying data (`child`), load state (`loadingChild`) and error state (`errorChild`).
+Pass `EntityStreamedState` instance to the `streamedState` argument first. After that, you can specify a set of widgets for displaying data (`child`), load state (`loadingChild`), and error state (`errorChild`).
 
 ```dart
 EntityStateBuilder<UserProfile>(
@@ -274,9 +274,9 @@ To summarize, every time someone calls an `EntityStateBuilder`'s functions (`loa
 
 #### TextFieldStreamedState + TextFieldStateBuilder
 
-The idea of `TextFieldStreamedState` and `TextFieldStateBuilder` technically the same with the difference that `TextFieldStreamedState` is designed to work with text widgets (`Text`, `TextField`, etc.).
+The idea behind `TextFieldStreamedState` and `TextFieldStateBuilder` is technically the same. The only difference is that `TextFieldStreamedState` is designed to work with text widgets (`Text`, `TextField`, etc.).
 
-`TextFieldStreamedState` allows you to setup your text field validation rules and some other settings like is the text field enabled or mandatory to be filled.
+`TextFieldStreamedState` allows you to set up your text field validation rules and some other settings, such as making the text field mandatory for the user to fill out.
 
 ```dart
 final textState = TextFieldStreamedState(
