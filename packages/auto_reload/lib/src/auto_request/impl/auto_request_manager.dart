@@ -29,33 +29,31 @@ const int _defaultMaxReloadDurationSeconds = 1800;
 /// exponentially increasing
 class AutoRequestManager implements AutoFutureManager {
   AutoRequestManager({
-    int minReloadDurationSeconds,
-    int maxReloadDurationSeconds,
-  })  : _minReloadDurationSeconds =
-            minReloadDurationSeconds ?? _defaultMinReloadDurationSeconds,
-        _maxReloadDurationSeconds =
-            maxReloadDurationSeconds ?? _defaultMaxReloadDurationSeconds {
-    _currentReloadDuration = minReloadDurationSeconds;
+    int? minReloadDurationSeconds,
+    int? maxReloadDurationSeconds,
+  })  : _minReloadDurationSeconds = minReloadDurationSeconds ?? _defaultMinReloadDurationSeconds,
+        _maxReloadDurationSeconds = maxReloadDurationSeconds ?? _defaultMaxReloadDurationSeconds {
+    _currentReloadDuration = minReloadDurationSeconds ?? _defaultMinReloadDurationSeconds;
   }
 
   final int _minReloadDurationSeconds;
   final int _maxReloadDurationSeconds;
-  int _currentReloadDuration;
+  late int _currentReloadDuration;
 
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
-  var _queue = HashMap<String, Future Function()>();
-  HashMap _callbacks = HashMap<String, AutoFutureCallback>();
+  final _queue = HashMap<String, Future Function()>();
+  final _callbacks = HashMap<String, AutoFutureCallback>();
 
-  Timer _requestTimer;
+  Timer? _requestTimer;
 
   /// register request for auto reload
   @override
   Future<void> autoReload({
-    String id,
-    Future Function() toReload,
-    AutoFutureCallback onComplete,
+    required String id,
+    required Future Function() toReload,
+    AutoFutureCallback? onComplete,
   }) async {
     _queue.putIfAbsent(id, () {
       if (onComplete != null) {
@@ -71,15 +69,13 @@ class AutoRequestManager implements AutoFutureManager {
   Future<void> dispose() async {
     _queue.clear();
     _callbacks.clear();
-    _queue = _callbacks = null;
-    await _connectivitySubscription.cancel();
-    _requestTimer.cancel();
+    await _connectivitySubscription?.cancel();
+    _requestTimer?.cancel();
   }
 
   Future<void> _tryReload() async {
     await _connectivity.checkConnectivity();
-    _connectivitySubscription ??=
-        _connectivity.onConnectivityChanged.listen(_reloadRequest);
+    _connectivitySubscription ??= _connectivity.onConnectivityChanged.listen(_reloadRequest);
   }
 
   void _reloadRequest(ConnectivityResult connection) {
@@ -125,13 +121,15 @@ class AutoRequestManager implements AutoFutureManager {
   }
 
   Future<void> _handleItemQueue(String key) async {
-    await _queue[key]();
-    _queue.remove(key);
-    if (!_callbacks.containsKey(key)) {
-      return;
+    final _queueValue = _queue.remove(key);
+    if (_queueValue != null) {
+      await _queueValue();
     }
-    _callbacks[key](key);
-    _callbacks.remove(key);
+
+    final _callbacksValue = _callbacks.remove(key);
+    if (_callbacksValue != null) {
+      _callbacksValue(key);
+    }
   }
 
   bool _needToReload(ConnectivityResult connection) {

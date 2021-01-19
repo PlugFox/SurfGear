@@ -24,8 +24,8 @@ abstract class AutoFutureManager {
   /// [toReload] - himself future on reboot
   /// [onComplete] - callback of success future, that returns id in queue
   Future<void> autoReload({
-    String id,
-    Future Function() toReload,
+    required String id,
+    required Future Function() toReload,
     AutoFutureCallback onComplete,
   });
 }

@@ -14,7 +14,7 @@
 
 import 'dart:async';
 
-import 'auto_reloader.dart';
+import 'package:auto_reload/src/auto_reload/auto_reloader.dart';
 
 /// Mixin that implements the auto-reload
 ///
@@ -25,7 +25,7 @@ import 'auto_reloader.dart';
 mixin AutoReloadMixin on AutoReloader {
   final Duration autoReloadDuration = const Duration(minutes: 5);
 
-  Timer _autoReloadTimer;
+  Timer? _autoReloadTimer;
 
   void startAutoReload() {
     cancelAutoReload();
