@@ -13,13 +13,15 @@
 // limitations under the License.
 
 import 'dart:async';
+
 import 'package:bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,7 +34,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
   final String title;
 
   @override
@@ -43,9 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final StreamController<BottomNavTabType> _selectorController =
       StreamController<BottomNavTabType>.broadcast();
 
-  List<BottomNavTabType> _types;
+  late List<BottomNavTabType> _types;
 
-  Map<BottomNavTabType, BottomNavigationRelationship> _map;
+  late Map<BottomNavTabType, BottomNavigationRelationship> _map;
 
   bool _isCustom = true;
 
