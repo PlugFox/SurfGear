@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Migrate this package to null safety.
+
 ## 1.0.0-dev.3
 
 * Fix lint hints
