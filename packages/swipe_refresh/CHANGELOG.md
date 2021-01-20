@@ -1,4 +1,8 @@
-##0.0.1-dev.9
+## 0.1.0
+
+* Migrate this package to null safety.
+
+## 0.0.1-dev.9
 
 * Added keyboardDismissBehavior (Material) and scroll physics
 
